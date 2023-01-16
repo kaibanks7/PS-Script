@@ -1,0 +1,25 @@
+# Define the list of computers
+$computers = @("computer1", "computer2", "computer3")
+
+# Define the list of software to check
+$software = @("Microsoft Office", "Google Chrome")
+
+# Loop through the computers
+foreach ($computer in $computers) {
+    # Check if the computer is online
+    if (Test-Connection -ComputerName $computer -Count 1 -Quiet) {
+        # Loop through the software
+        foreach ($sw in $software) {
+            # Get the software version
+            $version = (Get-WmiObject -ComputerName $computer -Class Win32_Product | Where-Object { $_.Name -like $sw }).Version
+            # If the software is installed, write the version to the console
+            if ($version) {
+                Write-Host "$sw is installed on $computer with version $version"
+            } else {
+                Write-Host "$sw is not installed on $computer"
+            }
+        }
+    } else {
+        Write-Host "$computer is offline"
+    }
+}
