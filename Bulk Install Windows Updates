@@ -1,0 +1,8 @@
+# Import the required modules
+Import-Module -Name PSWindowsUpdate
+
+# Get a list of available updates
+$Updates = Get-WindowsUpdate -MicrosoftUpdate -AcceptAll
+
+# Install the updates
+$Updates | ForEach-Object {Install-WindowsUpdate -Update $_ -Confirm:$false}
