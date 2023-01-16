@@ -1,0 +1,18 @@
+# Define the shutdown time
+$shutdownTime = "22:00:00"
+
+# Get the current time
+$currentTime = (Get-Date).TimeOfDay
+
+# Get the shutdown time as a TimeSpan object
+$shutdownTime = [timespan]::Parse($shutdownTime)
+
+# Compare the current time to the shutdown time
+if ($currentTime -gt $shutdownTime) {
+    # If the current time is later than the shutdown time, schedule the shutdown for tomorrow
+    $shutdownTime = $shutdownTime.Add(New-TimeSpan -Days 1)
+}
+
+# Schedule the shutdown
+$shutdownTime = (Get-Date).Date.Add($shutdownTime)
+schtasks /create /tn "Shutdown" /tr "shutdown /s /t 0" /sc once /st $shutdownTime
