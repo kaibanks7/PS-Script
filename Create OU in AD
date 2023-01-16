@@ -1,0 +1,9 @@
+# Import the Active Directory module
+Import-Module -Name ActiveDirectory
+
+# Define the parameters for the new OU
+$OUName = "MyNewOU"
+$Path = "OU=MyNewOU,DC=mydomain,DC=com"
+
+# Create the new OU
+New-ADOrganizationalUnit -Name $OUName -Path $Path
